@@ -1,4 +1,4 @@
-from sqlalchemy import select, or_
+from sqlalchemy import select, or_, and_, extract
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from as_fast.database.models import Contact
@@ -52,13 +52,36 @@ async def get_contact(user_id: int, db: AsyncSession):
     return contact.scalar_one_or_none()
 
 
+# async def get_contacts_birth(limit: int, db: AsyncSession):
+#     current_date = datetime.now().date()
+#     end_date = current_date + timedelta(days=limit)
+#
+#     search = select(Contact).filter(Contact.birth_date >= current_date, Contact.birth_date <= end_date)
+#     result = await db.execute(search)
+#
+#     return result.scalars().all()
 async def get_contacts_birth(limit: int, db: AsyncSession):
     current_date = datetime.now().date()
     end_date = current_date + timedelta(days=limit)
 
-    search = select(Contact).filter(Contact.birth_date >= current_date, Contact.birth_date <= end_date)
-    result = await db.execute(search)
+    search = select(Contact).filter(
+        or_(
+            and_(
+                extract('month', Contact.birth_date) == current_date.month,
+                extract('day', Contact.birth_date) >= current_date.day
+            ),
+            and_(
+                extract('month', Contact.birth_date) == end_date.month,
+                extract('day', Contact.birth_date) <= end_date.day
+            ),
+            and_(
+                extract('month', Contact.birth_date) == (current_date.month + 1) % 12,
+                extract('day', Contact.birth_date) <= end_date.day
+            )
+        )
+    )
 
+    result = await db.execute(search)
     return result.scalars().all()
 
 
