@@ -7,7 +7,7 @@ class Base(DeclarativeBase):
     ...
 
 
-class User(Base):
+class Contact(Base):
     __tablename__ = 'users'
     id: Mapped[int] = mapped_column(primary_key=True)
     first_name: Mapped[str] = mapped_column(String(50), index=True)

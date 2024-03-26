@@ -1,8 +1,8 @@
 from sqlalchemy import select, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from source.models.models import User
-from source.schemas.user import UserSchema
+from as_fast.database.models import Contact
+from as_fast.schemas.contact import ContactSchemas
 
 from datetime import datetime, timedelta
 
