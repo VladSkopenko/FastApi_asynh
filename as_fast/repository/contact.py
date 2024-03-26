@@ -13,7 +13,7 @@ async def get_contacts(limit: int, offset: int, db: AsyncSession):
     return contacts.scalars().all()
 
 
-async def get_contact_by(first_name: str = None, second_name: str = None, email_add: str = None, db: AsyncSession = None):
+async def get_contacts_by(first_name: str = None, second_name: str = None, email_add: str = None, db: AsyncSession = None):
     search = select(Contact)
     if first_name and second_name and email_add:
         search = search.where(
@@ -52,7 +52,7 @@ async def get_contact(user_id: int, db: AsyncSession):
     return contact.scalar_one_or_none()
 
 
-async def get_contact_birth(limit: int, db: AsyncSession):
+async def get_contacts_birth(limit: int, db: AsyncSession):
     current_date = datetime.now().date()
     end_date = current_date + timedelta(days=limit)
 

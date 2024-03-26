@@ -11,7 +11,7 @@ router = APIRouter(prefix='/contacts', tags=['contacts'])
 @router.get("/", response_model=list[ContactResponse])
 async def get_contacts(limit: int = Query(10, ge=10, le=500), offset: int = Query(0, ge=0),
                        db: AsyncSession = Depends(get_db)):
-    contacts = await repository_contacts.get_users(limit, offset, db)
+    contacts = await repository_contacts.get_contacts(limit, offset, db)
     return contacts
 
 
@@ -46,7 +46,7 @@ async def create_contact(body: ContactSchema, db: AsyncSession = Depends(get_db)
 
 
 @router.put("/{contact_id}")
-async def update_contact(body: ContactSchema, user_id: int = Path(ge=1), db: AsyncSession = Depends(get_db)):
+async def update_contact(body: ContactSchema, contact_id: int = Path(ge=1), db: AsyncSession = Depends(get_db)):
     contact = await repository_contacts.update_contact(contact_id, body, db)
     if contact is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="NOT FOUND")
@@ -55,5 +55,5 @@ async def update_contact(body: ContactSchema, user_id: int = Path(ge=1), db: Asy
 
 @router.delete("/{user_id}")
 async def delete_contact(contact_id: int = Path(ge=1), db: AsyncSession = Depends(get_db)):
-    contact = await repository_contacts.delete_user(contact_id, db)
+    contact = await repository_contacts.delete_contact(contact_id, db)
     return contact
