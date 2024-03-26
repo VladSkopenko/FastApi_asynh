@@ -3,12 +3,12 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from as_fast.database.db import get_db
-from as_fast.routes import users
+from as_fast.routes import contacts
 
 app = FastAPI()
 
 
-app.include_router(users.router, prefix="/api")
+app.include_router(contacts.router, prefix="/api")
 
 
 @app.get("/")

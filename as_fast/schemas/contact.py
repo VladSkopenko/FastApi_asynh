@@ -10,13 +10,13 @@ class ContactSchema(BaseModel):
     birth_date: date
 
 
-class ContactSchemaResponse(BaseModel):
+class ContactResponse(BaseModel):
     id: int = 1
     first_name: str
     second_name: str
-    email_add: EmailStr
-    phone_num: str
-    birth_date: date
+    email_add:  EmailStr
+    phone_num:  str
+    birth_date:  date
 
     class Config:
         from_attributes = True
