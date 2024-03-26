@@ -53,7 +53,7 @@ async def update_contact(body: ContactSchema, contact_id: int = Path(ge=1), db: 
     return contact
 
 
-@router.delete("/{user_id}")
+@router.delete("/{contact_id}")
 async def delete_contact(contact_id: int = Path(ge=1), db: AsyncSession = Depends(get_db)):
     contact = await repository_contacts.delete_contact(contact_id, db)
     return contact
